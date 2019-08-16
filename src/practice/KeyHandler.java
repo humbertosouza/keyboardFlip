@@ -6,12 +6,10 @@ package practice;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +77,37 @@ public class KeyHandler {
 	}
 	
 	/**
+	 * Initialize keyboard
+	 */
+	public KeyHandler() {
+
+		keyboardString = this.buildKeyboardString(keyboardArray);		
+
+	}
+	
+	//Getters, Setters and similar
+	
+	public Map<String, String> getOld2NewKeyboard() {
+		return old2NewKeyboard;
+	}
+
+	public void setOld2NewKeyboard(Map<String, String> old2NewKeyboard) {
+		this.old2NewKeyboard = old2NewKeyboard;
+	}
+
+	public String getMap() {
+
+		return keyboardString;
+
+	}
+
+	public String[][] getKeybArr() {
+
+		return keyboardArray;
+
+	}
+	
+	/**
 	 * Process the text according to the keyboard moves, processing the text line by line 	
 	 * @param keyMoves
 	 * @param textInput
@@ -109,7 +138,7 @@ public class KeyHandler {
 			
 		} catch (IOException e) {
 			System.out.println("File not found. Processing existing text.\n");
-			String newLine = this.processLine(textInput);
+			String newLine = this.processLine(textInput.toLowerCase());
 			System.out.println(newLine);
 			success = 1;
 			
@@ -119,6 +148,8 @@ public class KeyHandler {
 	}
 	
 	
+
+
 	/**
 	 * Process each line of the text, transforming from the old mapping to the new keyboard mapping
 	 * It assumes that the original text is provided using the original keyboard set.
@@ -137,7 +168,7 @@ public class KeyHandler {
 		int size = line.length();
 		for(int i=0; i< size; i++) {
 			char charat = line.charAt(i);
-			String newChar = this.old2NewKeyboard.getOrDefault(String.valueOf(charat), String.valueOf(charat));
+			String newChar = this.getOld2NewKeyboard().getOrDefault(String.valueOf(charat), String.valueOf(charat));
 			newLine.append(newChar);
 
 		}
@@ -180,13 +211,13 @@ public class KeyHandler {
 		System.out.println("Resulting keyboard: \n" + this.buildKeyboardString(tempKeyboard) + "\n");
 		System.out.println("Original keyboard: \n" + this.getMap() + "\n");
 		
-		this.old2NewKeyboard.clear();
+		this.getOld2NewKeyboard().clear();
 		
 		for(int i=0; i< 4; i++) {
 
 			for(int j=0; j< 10; j++) {
 				
-				this.old2NewKeyboard.put( refKeyboard[i][j], tempKeyboard[i][j]);
+				this.getOld2NewKeyboard().put( refKeyboard[i][j], tempKeyboard[i][j]);
 
 			}
 		}
@@ -256,27 +287,6 @@ public class KeyHandler {
 		System.out.println("Flip 1000:	" + keyHandler.buildKeyboardString(keyHandler.flip(keybArr,1000)));
 		System.out.println("Flip -1000:	" + keyHandler.buildKeyboardString(keyHandler.flip(keybArr,-1000)));
 		
-	}
-
-	/**
-	 * Initialize keyboard
-	 */
-	public KeyHandler() {
-
-		keyboardString = this.buildKeyboardString(keyboardArray);		
-
-	}
-
-	public String getMap() {
-
-		return keyboardString;
-
-	}
-
-	public String[][] getKeybArr() {
-
-		return keyboardArray;
-
 	}
 
 	/**
@@ -384,8 +394,7 @@ public class KeyHandler {
 		return newKeyboard;
 	}
 
-	// Not optimized for Java 6. 
-	// From Java 8, we could initialize the JVM with -XX:+UseStringDeduplication	
+
 	/**
 	 * Build new Keyboard String from the keyboard array
 	 *	- Not optimized for Java 6. It could be Stringbuffer, but the content is too small.
