@@ -78,8 +78,11 @@ public class KeyHandler {
 
 	}
 	
-	/*
+	/**
 	 * Process the text according to the keyboard moves, processing the text line by line 	
+	 * @param keyMoves
+	 * @param textInput
+	 * @return
 	 */
 	public int processTextFile(String[] keyMoves, String textInput) {
 		
@@ -105,7 +108,9 @@ public class KeyHandler {
 			reader.close();
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("File not found. Processing existing text.\n");
+			String newLine = this.processLine(textInput);
+			System.out.println(newLine);
 			success = 1;
 			
 		}
