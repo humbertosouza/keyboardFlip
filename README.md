@@ -4,9 +4,9 @@ By Humberto Ribeiro de Souza
 
 ## How to use
 
-Download ZIP file contained. The source file is available under the src folder.
+Download ZIP file contained. or compile the source code using Java 6.
 
-On a terminal, using a JRE 6 engine or newer, run
+On a terminal, run
 
 ```shell 
 $java -jar keyboardv1.jar** 
